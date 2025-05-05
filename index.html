@@ -141,7 +141,6 @@
       box-shadow: 0 2px 20px rgba(0,0,0,0.05);
       z-index: 1000;
       transition: all 0.3s ease;
-      
     }
     
     nav.scrolled {
@@ -160,7 +159,7 @@
     .logo span {
       color: var(--primary);
     }
-
+    
     .nav-links {
       display: flex;
       align-items: center;
@@ -767,6 +766,17 @@
       transform: rotate(360deg);
     }
     
+    /* Menú móvil */
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--dark);
+      font-size: 1.5rem;
+      cursor: pointer;
+      z-index: 1001;
+    }
+    
     /* Responsive */
     @media (max-width: 992px) {
       section {
@@ -779,6 +789,8 @@
       
       .about-image {
         order: -1;
+        max-width: 80%;
+        margin: 0 auto;
       }
     }
     
@@ -787,12 +799,42 @@
         padding: 15px 5%;
       }
       
-      .nav-links {
-        display: none;
-      }
-      
       .mobile-menu-btn {
         display: block;
+      }
+      
+      .nav-links {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 80%;
+        max-width: 300px;
+        height: 100vh;
+        background: white;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 80px 30px;
+        box-shadow: -5px 0 20px rgba(0,0,0,0.1);
+        transition: right 0.3s ease;
+        z-index: 1000;
+      }
+      
+      .nav-links.active {
+        right: 0;
+      }
+      
+      nav a {
+        margin: 15px 0;
+        font-size: 1.1rem;
+      }
+      
+      .language-selector {
+        margin: 15px 0 0 0;
+      }
+      
+      .language-dropdown {
+        right: auto;
+        left: 0;
       }
       
       header h1 {
@@ -822,10 +864,6 @@
         bottom: 20px;
         right: 20px;
       }
-      
-      .language-selector {
-        margin-left: 15px;
-      }
     }
     
     @media (max-width: 576px) {
@@ -848,6 +886,43 @@
       .project-info p {
         font-size: 0.8rem;
       }
+      
+      .footer-content {
+        grid-template-columns: 1fr;
+        gap: 30px;
+      }
+      
+      .footer-col {
+        margin-bottom: 20px;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      header {
+        min-height: 600px;
+      }
+      
+      header h1 {
+        font-size: 2rem;
+        padding: 0 20px;
+      }
+      
+      .btn {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+      }
+      
+      .section-title h2 {
+        font-size: 1.5rem;
+      }
+      
+      .contact-container {
+        grid-template-columns: 1fr;
+      }
+      
+      .contact-form {
+        order: -1;
+      }
     }
   </style>
 </head>
@@ -855,6 +930,9 @@
 
   <nav id="navbar">
     <div class="logo">Barahona <span>Construction</span></div>
+    <button class="mobile-menu-btn" id="mobileMenuBtn">
+      <i class="fas fa-bars"></i>
+    </button>
     <div class="nav-links">
       <a href="#inicio" class="nav-link" data-key="inicio">Inicio</a>
       <a href="#nosotros" class="nav-link" data-key="nosotros">Nosotros</a>
@@ -1203,12 +1281,12 @@
         
         // Redirigir a WhatsApp después de 1 segundo
         setTimeout(() => {
-          const phoneNumber = "50376427672"; // Reemplaza con tu número real
+          const phoneNumber = "50378901234"; // Reemplaza con tu número real
           const encodedMessage = encodeURIComponent(message);
           window.open(`https://wa.me/${phoneNumber}?text=${encodedMessage}`, '_blank');
           
-          // Opcional: Cerrar el chat después de redirigir
-          whatsappChat.style.display = 'none';
+          // Cerrar el chat después de redirigir
+          whatsappChat.classList.remove('active');
         }, 1000);
       }
     }
@@ -1217,149 +1295,173 @@
     messageInput.addEventListener('keypress', (e) => {
       if (e.key === 'Enter') sendMessage();
     });
-
-    // Añade esto al final del script existente
-
-// Traducciones
-const translations = {
-  "es": {
-    "inicio": "Inicio",
-    "nosotros": "Nosotros",
-    "proyectos": "Proyectos",
-    "contacto": "Contacto",
-    "title": "Transformamos espacios en experiencias",
-    "subtitle": "Diseño. Construcción. Remodelación de alto nivel.",
-    "contactBtn": "Contáctanos",
-    "projectsBtn": "Ver Proyectos",
-    "aboutTitle": "¿Quiénes Somos?",
-    "aboutSubtitle": "Expertos en crear espacios que inspiran y perduran en el tiempo",
-    "aboutHeading": "Construyendo sueños desde 2010",
-    "aboutText1": "En Barahona Construction combinamos diseño arquitectónico, funcionalidad moderna y atención meticulosa a los detalles. Nuestra pasión es transformar tus ideas en espacios habitables que superen tus expectativas.",
-    "aboutText2": "Con más de una década de experiencia en el sector, hemos desarrollado un enfoque único que combina creatividad, calidad y eficiencia.",
-    "feature1Title": "Calidad Garantizada",
-    "feature1Text": "Materiales premium y mano de obra especializada",
-    "feature2Title": "Entregas a Tiempo",
-    "feature2Text": "Cumplimos rigurosamente con los plazos",
-    "feature3Title": "Diseño Innovador",
-    "feature3Text": "Soluciones creativas para cada espacio",
-    "feature4Title": "Transparencia",
-    "feature4Text": "Presupuestos claros sin sorpresas",
-    "projectsTitle": "Nuestros Proyectos",
-    "projectsSubtitle": "Algunos de nuestros trabajos recientes que muestran nuestra calidad y versatilidad",
-    "project1Title": "Residencia Las Lomas",
-    "project1Text": "Construcción completa de vivienda de lujo",
-    "project2Title": "Centro Comercial Galerías",
-    "project2Text": "Remodelación integral de espacio comercial",
-    "project3Title": "Apartamento Vista al Mar",
-    "project3Text": "Diseño y decoración de interiores",
-    "project4Title": "Oficinas Corporativas",
-    "project4Text": "Construcción de sede empresarial",
-    "contactTitle": "Contáctanos",
-    "contactSubtitle": "Estamos listos para hacer realidad tu proyecto. ¡Escríbenos!",
-    "contactHeading": "Información de Contacto",
-    "address": "Dirección",
-    "phone": "Teléfono",
-    "email": "Email",
-    "hours": "Horario",
-    "hoursText": "Lunes a Viernes: 8:00 am - 5:00 pm",
-    "nameLabel": "Nombre Completo",
-    "emailLabel": "Correo Electrónico",
-    "phoneLabel": "Teléfono",
-    "messageLabel": "Tu Mensaje",
-    "sendBtn": "Enviar Mensaje",
-    "footerText": "Transformamos tus ideas en espacios habitables de alto nivel con calidad, diseño y funcionalidad.",
-    "quickLinks": "Enlaces Rápidos"
-  },
-  "en": {
-    "inicio": "Home",
-    "nosotros": "About Us",
-    "proyectos": "Projects",
-    "contacto": "Contact",
-    "title": "We transform spaces into experiences",
-    "subtitle": "Design. Construction. High-end remodeling.",
-    "contactBtn": "Contact Us",
-    "projectsBtn": "View Projects",
-    "aboutTitle": "Who We Are?",
-    "aboutSubtitle": "Experts in creating spaces that inspire and endure",
-    "aboutHeading": "Building dreams since 2010",
-    "aboutText1": "At Barahona Construction we combine architectural design, modern functionality and meticulous attention to detail. Our passion is transforming your ideas into livable spaces that exceed your expectations.",
-    "aboutText2": "With over a decade of experience in the sector, we have developed a unique approach that combines creativity, quality and efficiency.",
-    "feature1Title": "Guaranteed Quality",
-    "feature1Text": "Premium materials and specialized workmanship",
-    "feature2Title": "On-Time Delivery",
-    "feature2Text": "We strictly comply with deadlines",
-    "feature3Title": "Innovative Design",
-    "feature3Text": "Creative solutions for every space",
-    "feature4Title": "Transparency",
-    "feature4Text": "Clear budgets with no surprises",
-    "projectsTitle": "Our Projects",
-    "projectsSubtitle": "Some of our recent works showing our quality and versatility",
-    "project1Title": "Las Lomas Residence",
-    "project1Text": "Complete construction of luxury housing",
-    "project2Title": "Galerías Shopping Center",
-    "project2Text": "Comprehensive commercial space remodeling",
-    "project3Title": "Sea View Apartment",
-    "project3Text": "Interior design and decoration",
-    "project4Title": "Corporate Offices",
-    "project4Text": "Corporate headquarters construction",
-    "contactTitle": "Contact Us",
-    "contactSubtitle": "We're ready to make your project come true. Write to us!",
-    "contactHeading": "Contact Information",
-    "address": "Address",
-    "phone": "Phone",
-    "email": "Email",
-    "hours": "Hours",
-    "hoursText": "Monday to Friday: 8:00 am - 5:00 pm",
-    "nameLabel": "Full Name",
-    "emailLabel": "Email Address",
-    "phoneLabel": "Phone",
-    "messageLabel": "Your Message",
-    "sendBtn": "Send Message",
-    "footerText": "We transform your ideas into high-quality living spaces with design and functionality.",
-    "quickLinks": "Quick Links"
-  }
-};
-
-// Función para cambiar el idioma
-function changeLanguage(lang) {
-  // Guardar preferencia de idioma
-  localStorage.setItem('language', lang);
-  
-  // Actualizar botón de idioma
-  const langBtn = document.querySelector('.language-btn');
-  if (lang === 'es') {
-    langBtn.innerHTML = '<img src="https://flagcdn.com/w20/es.png" alt="Español"><span>ES</span>';
-  } else {
-    langBtn.innerHTML = '<img src="https://flagcdn.com/w20/us.png" alt="English"><span>EN</span>';
-  }
-  
-  // Traducir todos los elementos con data-key
-  document.querySelectorAll('[data-key]').forEach(element => {
-    const key = element.getAttribute('data-key');
-    if (translations[lang] && translations[lang][key]) {
-      element.textContent = translations[lang][key];
+    
+    // Menú móvil
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const navLinks = document.querySelector('.nav-links');
+    
+    mobileMenuBtn.addEventListener('click', function() {
+      navLinks.classList.toggle('active');
       
-      // Manejar placeholders en inputs
-      if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
-        element.setAttribute('placeholder', translations[lang][key]);
+      // Cambiar icono
+      const icon = this.querySelector('i');
+      if (navLinks.classList.contains('active')) {
+        icon.classList.remove('fa-bars');
+        icon.classList.add('fa-times');
+      } else {
+        icon.classList.remove('fa-times');
+        icon.classList.add('fa-bars');
       }
+    });
+    
+    // Cerrar menú al hacer clic en un enlace
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', function() {
+        if (window.innerWidth <= 768) {
+          navLinks.classList.remove('active');
+          mobileMenuBtn.querySelector('i').classList.remove('fa-times');
+          mobileMenuBtn.querySelector('i').classList.add('fa-bars');
+        }
+      });
+    });
+    
+    // Traducciones
+    const translations = {
+      "es": {
+        "inicio": "Inicio",
+        "nosotros": "Nosotros",
+        "proyectos": "Proyectos",
+        "contacto": "Contacto",
+        "title": "Transformamos espacios en experiencias",
+        "subtitle": "Diseño. Construcción. Remodelación de alto nivel.",
+        "contactBtn": "Contáctanos",
+        "projectsBtn": "Ver Proyectos",
+        "aboutTitle": "¿Quiénes Somos?",
+        "aboutSubtitle": "Expertos en crear espacios que inspiran y perduran en el tiempo",
+        "aboutHeading": "Construyendo sueños desde 2010",
+        "aboutText1": "En Barahona Construction combinamos diseño arquitectónico, funcionalidad moderna y atención meticulosa a los detalles. Nuestra pasión es transformar tus ideas en espacios habitables que superen tus expectativas.",
+        "aboutText2": "Con más de una década de experiencia en el sector, hemos desarrollado un enfoque único que combina creatividad, calidad y eficiencia.",
+        "feature1Title": "Calidad Garantizada",
+        "feature1Text": "Materiales premium y mano de obra especializada",
+        "feature2Title": "Entregas a Tiempo",
+        "feature2Text": "Cumplimos rigurosamente con los plazos",
+        "feature3Title": "Diseño Innovador",
+        "feature3Text": "Soluciones creativas para cada espacio",
+        "feature4Title": "Transparencia",
+        "feature4Text": "Presupuestos claros sin sorpresas",
+        "projectsTitle": "Nuestros Proyectos",
+        "projectsSubtitle": "Algunos de nuestros trabajos recientes que muestran nuestra calidad y versatilidad",
+        "project1Title": "Residencia Las Lomas",
+        "project1Text": "Construcción completa de vivienda de lujo",
+        "project2Title": "Centro Comercial Galerías",
+        "project2Text": "Remodelación integral de espacio comercial",
+        "project3Title": "Apartamento Vista al Mar",
+        "project3Text": "Diseño y decoración de interiores",
+        "project4Title": "Oficinas Corporativas",
+        "project4Text": "Construcción de sede empresarial",
+        "contactTitle": "Contáctanos",
+        "contactSubtitle": "Estamos listos para hacer realidad tu proyecto. ¡Escríbenos!",
+        "contactHeading": "Información de Contacto",
+        "address": "Dirección",
+        "phone": "Teléfono",
+        "email": "Email",
+        "hours": "Horario",
+        "hoursText": "Lunes a Viernes: 8:00 am - 5:00 pm",
+        "nameLabel": "Nombre Completo",
+        "emailLabel": "Correo Electrónico",
+        "phoneLabel": "Teléfono",
+        "messageLabel": "Tu Mensaje",
+        "sendBtn": "Enviar Mensaje",
+        "footerText": "Transformamos tus ideas en espacios habitables de alto nivel con calidad, diseño y funcionalidad.",
+        "quickLinks": "Enlaces Rápidos"
+      },
+      "en": {
+        "inicio": "Home",
+        "nosotros": "About Us",
+        "proyectos": "Projects",
+        "contacto": "Contact",
+        "title": "We transform spaces into experiences",
+        "subtitle": "Design. Construction. High-end remodeling.",
+        "contactBtn": "Contact Us",
+        "projectsBtn": "View Projects",
+        "aboutTitle": "Who We Are?",
+        "aboutSubtitle": "Experts in creating spaces that inspire and endure",
+        "aboutHeading": "Building dreams since 2010",
+        "aboutText1": "At Barahona Construction we combine architectural design, modern functionality and meticulous attention to detail. Our passion is transforming your ideas into livable spaces that exceed your expectations.",
+        "aboutText2": "With over a decade of experience in the sector, we have developed a unique approach that combines creativity, quality and efficiency.",
+        "feature1Title": "Guaranteed Quality",
+        "feature1Text": "Premium materials and specialized workmanship",
+        "feature2Title": "On-Time Delivery",
+        "feature2Text": "We strictly comply with deadlines",
+        "feature3Title": "Innovative Design",
+        "feature3Text": "Creative solutions for every space",
+        "feature4Title": "Transparency",
+        "feature4Text": "Clear budgets with no surprises",
+        "projectsTitle": "Our Projects",
+        "projectsSubtitle": "Some of our recent works showing our quality and versatility",
+        "project1Title": "Las Lomas Residence",
+        "project1Text": "Complete construction of luxury housing",
+        "project2Title": "Galerías Shopping Center",
+        "project2Text": "Comprehensive commercial space remodeling",
+        "project3Title": "Sea View Apartment",
+        "project3Text": "Interior design and decoration",
+        "project4Title": "Corporate Offices",
+        "project4Text": "Corporate headquarters construction",
+        "contactTitle": "Contact Us",
+        "contactSubtitle": "We're ready to make your project come true. Write to us!",
+        "contactHeading": "Contact Information",
+        "address": "Address",
+        "phone": "Phone",
+        "email": "Email",
+        "hours": "Hours",
+        "hoursText": "Monday to Friday: 8:00 am - 5:00 pm",
+        "nameLabel": "Full Name",
+        "emailLabel": "Email Address",
+        "phoneLabel": "Phone",
+        "messageLabel": "Your Message",
+        "sendBtn": "Send Message",
+        "footerText": "We transform your ideas into high-quality living spaces with design and functionality.",
+        "quickLinks": "Quick Links"
+      }
+    };
+
+    // Función para cambiar el idioma
+    function changeLanguage(lang) {
+      // Guardar preferencia de idioma
+      localStorage.setItem('language', lang);
+      
+      // Actualizar botón de idioma
+      const langBtn = document.querySelector('.language-btn');
+      if (lang === 'es') {
+        langBtn.innerHTML = '<img src="https://flagcdn.com/w20/es.png" alt="Español"><span>ES</span>';
+      } else {
+        langBtn.innerHTML = '<img src="https://flagcdn.com/w20/us.png" alt="English"><span>EN</span>';
+      }
+      
+      // Traducir todos los elementos con data-key
+      document.querySelectorAll('[data-key]').forEach(element => {
+        const key = element.getAttribute('data-key');
+        if (translations[lang] && translations[lang][key]) {
+          if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
+            element.setAttribute('placeholder', translations[lang][key]);
+          } else {
+            element.textContent = translations[lang][key];
+          }
+        }
+      });
     }
-  });
-}
 
-// Manejar clic en opciones de idioma
-document.querySelectorAll('.language-option').forEach(option => {
-  option.addEventListener('click', function() {
-    const lang = this.getAttribute('data-lang');
-    changeLanguage(lang);
-  });
-});
+    // Manejar clic en opciones de idioma
+    document.querySelectorAll('.language-option').forEach(option => {
+      option.addEventListener('click', function() {
+        const lang = this.getAttribute('data-lang');
+        changeLanguage(lang);
+      });
+    });
 
-// Cargar idioma guardado o usar español por defecto
-const savedLang = localStorage.getItem('language') || 'es';
-changeLanguage(savedLang);
-    
-    
+    // Cargar idioma guardado o usar español por defecto
+    const savedLang = localStorage.getItem('language') || 'es';
+    changeLanguage(savedLang);
   </script>
 </body>
 </html>
